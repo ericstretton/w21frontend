@@ -87,7 +87,7 @@ export default {
     getPosts(){
       console.log("Running GET");
       axios.request({
-        url : 'http://127.0.0.1:5000/api/posts',
+        url : VUE_APP_API_URL + "/posts",
         method : "GET"
       }).then((response)=>{
         console.log(response);
@@ -98,7 +98,7 @@ export default {
     },
     postBlogPost() {
       axios.request({
-        url : 'http://127.0.0.1:5000/api/posts',
+        url : VUE_APP_API_URL + "/posts",
         method : "POST",
         data : {
           content : this.content,
@@ -115,7 +115,7 @@ export default {
     },
     updatePost(content, title, postId) {
       axios.request({
-        url : 'http://127.0.0.1:5000/api/posts',
+        url : VUE_APP_API_URL + "/posts",
         method : "PATCH",
         params : {
           content, title, postId
@@ -133,7 +133,7 @@ export default {
     },
     deletePost(postId) {
       axios.request({
-        url : 'http://127.0.0.1:5000/api/posts',
+        url : VUE_APP_API_URL + "/posts",
         method : "DELETE",
         params: postId,
         data : {
