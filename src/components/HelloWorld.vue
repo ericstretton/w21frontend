@@ -1,17 +1,40 @@
 <template>
   <div class="hello">
-    <input 
-    v-model="title" id="title"
-    type="text">
-    <input 
-    v-model="content" id="content"
-    type="text">
-    <input 
-    v-model="user" id="user"
-    type="text">
-    <input 
-    v-model="created_at" id="created_at"
-    type="text">
+    <div>
+      <h1>Make a New Post</h1>
+      <input 
+      v-model="title" id="title"
+      type="text">
+      <input 
+      v-model="content" id="content"
+      type="text">
+      <input 
+      v-model="user" id="user"
+      type="text">
+      <input 
+      v-model="created_at" id="created_at"
+      type="text">
+    </div>
+    
+    <div>
+      <h1>Update a Post</h1>
+      <input 
+      v-model="title" id="updatetitle"
+      type="text">
+      <input 
+      v-model="content" id="updatecontent"
+      type="text">
+      <input 
+      v-model="postId" id="updateid"
+      type="text">
+    </div>
+
+    <div>
+      <h1>Delete a Post</h1>
+      <input 
+      v-model="postId" id="deleteid"
+      type="text">
+    </div>
 
     <button 
     @click="postBlogPost"
@@ -19,16 +42,28 @@
     <button 
     @click="getPosts"
     >GET</button>
+    <button 
+    @click="updatePost"
+    >UDATE</button>
+    <button 
+    @click="deletePost"
+    >DELETE</button>
+
+
 
     <div
     v-for="post in postArr"
     :key="post.animalId"
+    class="posts"
     >
+    <div>
       {{post.postId}}
       <h1>{{post.title}}</h1>
       <p>{{post.content}}</p>
       <h3>{{post.user}}</h3>
       <h3>{{post.created_at}}</h3>
+      </div>
+      
     </div>
   </div>
 </template>
@@ -44,6 +79,7 @@ export default {
       title: null,
       created_at: null,
       user: null,
+      postId : null,
       postArr: []
     }
   },
@@ -77,6 +113,38 @@ export default {
       })
       console.log(this.content, this.title, this.user, this.created_at);
     },
+    updatePost(content, title, postId) {
+      axios.request({
+        url : 'http://127.0.0.1:5000/api/posts',
+        method : "PATCH",
+        params : {
+          content, title, postId
+        },
+        data : {
+          content : this.content,
+          title : this.title,
+          postId : this.postId
+        }
+      }).then(()=>{
+        this.getPosts();
+      }).catch((error)=> {
+        console.log(error);
+      })
+    },
+    deletePost(postId) {
+      axios.request({
+        url : 'http://127.0.0.1:5000/api/posts',
+        method : "DELETE",
+        params: postId,
+        data : {
+          postId : this.postId
+        }
+      }).then(()=> {
+        this.getPosts();
+      }).catch((error)=> {
+        console.log(error);
+      })
+    }
   },
   mounted () {
     this.getPosts();
@@ -86,5 +154,13 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-
+.hello{
+  background-color: bisque;
+  .posts{
+    margin: 15px;
+    width: 70vw;
+    position: relative;
+    left : 12vw;
+  }
+}
 </style>
